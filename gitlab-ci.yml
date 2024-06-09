@@ -1,0 +1,35 @@
+# .gitlab-ci.yml
+
+stages:
+  - test
+  - deploy
+
+variables:
+  TERRAFORM_VERSION: "0.15.4"  # Specify the version of Terraform you want to use
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y unzip wget maven  
+  - wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+  - unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin/
+  - chmod +x /usr/local/bin/terraform
+  - terraform --version
+
+# Test job
+test:
+  stage: test
+  script:
+    - mvn test  # Assuming you are using Maven for building and testing
+
+# Deployment job
+deploy:
+  stage: deploy
+  script:
+    - cd terraform_directory  # Change to the directory containing your Terraform configurations
+    - terraform init  # Initialize Terraform
+    - terraform plan -out=tfplan  # Create an execution plan
+    - terraform apply -input=false tfplan  # Apply the execution plan without requiring user input
+  environment:
+    name: production  # Define the environment where this job runs, you can change it as needed
+  only:
+    - main
