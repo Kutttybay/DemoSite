@@ -1,0 +1,24 @@
+groups:
+- name: response_time_alerts
+  rules:
+  - alert: HighResponseTime
+    expr: sum(rate(http_request_duration_seconds_sum{job="backend"}[1m])) by (status) / sum(rate(http_request_duration_seconds_count{job="backend"}[1m])) by (status) > 0.5
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High back-end response time detected"
+      description: "The average response time of back-end services has exceeded 500 milliseconds for the last 5 minutes."
+
+- name: error_rate_alerts
+  rules:
+  - alert: HighErrorRate
+    expr: sum(rate(http_request_duration_seconds_count{job="backend", status=~"5.."}[1m])) by (status) / sum(rate(http_request_duration_seconds_count{job="backend"}[1m])) by (status) > 0.05
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High error rate detected"
+      description: "The error rate of back-end services has exceeded 5% for the last 10 minutes."
+
+# Добавьте другие правила оповещений по мере необходимости

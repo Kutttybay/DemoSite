@@ -23,6 +23,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -32,6 +44,13 @@
     </build>
     
     <dependencies>
+        <!-- Micrometer Prometheus dependency -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <!-- Other dependencies -->
         <dependency>
             <groupId>com.mycompany-community</groupId>
             <artifactId>boot-community-demo-core</artifactId>
@@ -62,5 +81,4 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
-
 </project>

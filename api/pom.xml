@@ -32,6 +32,12 @@
     </build>
 
     <dependencies>
+        <!-- Micrometer Prometheus dependency -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.9.3</version>
+        </dependency>
         <dependency>
             <groupId>com.mycompany-community</groupId>
             <artifactId>boot-community-demo-core</artifactId>
